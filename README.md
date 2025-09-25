@@ -99,7 +99,7 @@ CREATE TABLE votes (
 
 ### 4. Configure Environment Variables
 
-1.Create a new `.env` file in the project root 
+1.Create a new `.env` file in the project root
 
 2.Add your Supabase credentials to `.env`:
 SUPABASE_URL="https://oqoekskjzqrbxaxsejlt.supabase.co"
