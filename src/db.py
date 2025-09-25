@@ -12,7 +12,9 @@ supabase=create_client(url,key)
 
 # Users Table crud
 def create_user(username: str, role: str = "voter"):
-    return supabase.table("users").insert({"username": username, "role": role}).execute()
+    return supabase.table("users").insert(
+        {"username": username,
+          "role": role}).execute()
 
 def read_users():
     return supabase.table("users").select("*").execute()
@@ -26,7 +28,9 @@ def delete_user(user_id: str):
 # ELECTIONS TABLE CRUD
 def create_election(title: str, start_date: str, end_date: str):
     return supabase.table("elections").insert(
-        {"title": title, "start_date": start_date, "end_date": end_date}
+        {"title": title,
+          "start_date": start_date,
+            "end_date": end_date}
     ).execute()
 
 def read_elections():
@@ -58,7 +62,9 @@ def delete_candidate(candidate_id: int):
 
 def create_vote(user_id: str, election_id: int, candidate_id: int):
     return supabase.table("votes").insert(
-        {"user_id": user_id, "election_id": election_id, "candidate_id": candidate_id}
+        {"user_id": user_id,
+          "election_id": election_id,
+            "candidate_id": candidate_id}
     ).execute()
 
 def read_votes():
