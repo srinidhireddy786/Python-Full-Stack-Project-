@@ -1,14 +1,8 @@
-#src logic.py
-
+# src/logic.py
 from src.db import DatabaseManager
 
-# ----------------------
-# User Class
-# ----------------------
+# ---------------------- User ----------------------
 class User:
-    """
-    Acts as a bridge between frontend (streamlit/FastAPI ) and the database.
-    """
     def __init__(self, db: DatabaseManager):
         self.db = db
 
@@ -17,18 +11,18 @@ class User:
 
     def read(self):
         return self.db.read_users()
+    
+    def update(self, user_id: str, new_username: str, role: str = None):
+        data = {"username": new_username}
+        if role:
+          data["role"] = role
+        return self.db.supabase.table("users").update(data).eq("user_id", user_id).execute().data
 
-    def update(self, user_id: str, new_username: str):
-        return self.db.update_user(user_id, new_username)
 
     def delete(self, user_id: str):
         return self.db.delete_user(user_id)
 
-
-# ----------------------
-# Election Class
-# ----------------------
-
+# ---------------------- Election ----------------------
 class Election:
     def __init__(self, db: DatabaseManager):
         self.db = db
@@ -45,11 +39,7 @@ class Election:
     def delete(self, election_id: int):
         return self.db.delete_election(election_id)
 
-
-# ----------------------
-# Candidate Class
-# ----------------------
-
+# ---------------------- Candidate ----------------------
 class Candidate:
     def __init__(self, db: DatabaseManager):
         self.db = db
@@ -66,12 +56,7 @@ class Candidate:
     def delete(self, candidate_id: int):
         return self.db.delete_candidate(candidate_id)
 
-
-# ----------------------
-# Vote Class
-# ----------------------
-
-
+# ---------------------- Vote ----------------------
 class Vote:
     def __init__(self, db: DatabaseManager):
         self.db = db
@@ -88,12 +73,7 @@ class Vote:
     def delete(self, vote_id: int):
         return self.db.delete_vote(vote_id)
 
-
-# ----------------------
-# Voting System Main Class
-# ----------------------
-
-
+# ---------------------- VotingSystem ----------------------
 class VotingSystem:
     def __init__(self):
         self.db = DatabaseManager()
@@ -105,14 +85,13 @@ class VotingSystem:
     def get_results(self, election_id: int):
         return self.db.get_results(election_id)
 
+    def cast_vote(self, user_id: str, election_id: int, candidate_id: int):
+        return self.db.create_vote(user_id, election_id, candidate_id)
+
     def declare_winner(self, election_id: int):
         results = self.db.get_results(election_id)
         if not results:
-            return {"Success": False, "Message": "No votes found for this election"}
-
+            return {"success": False, "message": "No votes found"}
         max_votes = max(results.values())
-        winners = [candidate for candidate, votes in results.items() if votes == max_votes]
-
-        return {"Success": True, "Winners": winners, "Votes": max_votes}
-
-
+        winners = [name for name, votes in results.items() if votes == max_votes]
+        return {"success": True, "winners": winners, "votes": max_votes}
