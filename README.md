@@ -1,4 +1,4 @@
-# TrueVote a voting platform
+# TrueVote a Voting Platform
 
 TrueVote is a secure, scalable, and user-friendly online voting system designed to simplify the election process for organizations, schools, and communities. It allows administrators to create and manage elections, register candidates, and monitor results, while voters can cast their votes easily and securely from any device.
 
